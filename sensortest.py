@@ -33,7 +33,7 @@ def read_raw_data(addr) :
     low = bus.read_byte_data(Device_Address, addr + 1)
 
     value = ((high << 8) | low)
-    if(value > 3268):
+    if(value > 32768):
         value = value - 65536
     return value
 
@@ -43,7 +43,7 @@ Device_Address = 0x68
 MPU_Init()
 print ("start gyro")
 
-gps_ser = serial.Serial(gps_port, baudrate =  9600)
+gps_ser = serial.Serial(gps_port, baudrate =  9600, timeout = 1)
 print ("serial is connected")
 
 while True :
@@ -51,7 +51,7 @@ while True :
 #    print gps_data
     if gps_data[0:6] == '$GPGGA' :
         msg = pynmea2.parse(gps_data)
-        print(msg.lat + msg.lon)
+        print("lat : " + msg.lat + "lon = " + msg.lon)
     else :
         print("gps dectection is fail")
 
@@ -77,5 +77,6 @@ while True :
     Gy = gyro_y / 131.0
     Gz = gyro_z / 131.0
 
-    print("Gx = %.3fdeg/s"%Gx, "Gy = %.3fdeg/s"%Gy, "Gz = %.3fdeg/s"%Gz, "Ax = %.3fg"%Ax, "Ay = %.3fg"%Ay, "Az = %.3fg"%Az)
+    print("Gx = %.2fdeg/s"%Gx + " Gy = %.2fdeg/s"%Gy, "Gz = %.2fdeg/s"%Gz, "Ax = %.2fg"%Ax, "Ay = %.2fg"%Ay, "Az = %.2fg"%Az)
+    #print("Gx = %.3fdeg/s"%Gx + " Gy = %.3fdeg/s"%Gy, "Gz = %.3fdeg/s"%Gz, "Ax = %.3fg"%Ax, "Ay = %.3fg"%Ay, "Az = %.3fg"%Az)
 
