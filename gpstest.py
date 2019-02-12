@@ -7,8 +7,9 @@ print ("serial is connected")
 
 while True :
     data = ser.readline()
-    print data
+#    print data
     if data[0:6] == '$GPGGA' :
         msg = pynmea2.parse(data)
         print(msg.lat + msg.lon)
-
+    else :
+        print ("fail to detection")

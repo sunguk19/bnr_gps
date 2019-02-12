@@ -3,6 +3,7 @@ import pynmea2
 import Adafruit_DHT
 import smbus            #import SMBus module of I2C
 from time import sleep          #import
+import datetime
 
 temp_sensor = Adafruit_DHT.DHT22
 temp_pin = 4
@@ -52,16 +53,8 @@ while True :
     if gps_data[0:6] == '$GPGGA' :
         msg = pynmea2.parse(gps_data)
         print("lat : " + msg.lat + "lon = " + msg.lon)
-    else :
-        print("gps dectection is fail")
-
-
-    humidity, temperature = Adafruit_DHT.read_retry(temp_sensor, temp_pin)
-    if humidity is not None and temperature is not None:
-        print('Temp = {0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
-    else :
-        print('fail to get reading temperature sensor value')
-    
+    #else :
+       # print("gps dectection is fail")
     acc_x = read_raw_data(ACCEL_XOUT_H)
     acc_y = read_raw_data(ACCEL_YOUT_H)
     acc_z = read_raw_data(ACCEL_ZOUT_H)
@@ -76,7 +69,18 @@ while True :
     Gx = gyro_x / 131.0
     Gy = gyro_y / 131.0
     Gz = gyro_z / 131.0
+    
+    s = datetime.datetime.now()
+    print s
 
     print("Gx = %.2fdeg/s"%Gx + " Gy = %.2fdeg/s"%Gy, "Gz = %.2fdeg/s"%Gz, "Ax = %.2fg"%Ax, "Ay = %.2fg"%Ay, "Az = %.2fg"%Az)
     #print("Gx = %.3fdeg/s"%Gx + " Gy = %.3fdeg/s"%Gy, "Gz = %.3fdeg/s"%Gz, "Ax = %.3fg"%Ax, "Ay = %.3fg"%Ay, "Az = %.3fg"%Az)
+
+
+    humidity, temperature = Adafruit_DHT.read_retry(temp_sensor, temp_pin)
+    if humidity is not None and temperature is not None:
+        print('Temp = {0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
+    else :
+        print('fail to get reading temperature sensor value')
+    
 
