@@ -4,6 +4,10 @@ import Adafruit_DHT
 import smbus            #import SMBus module of I2C
 from time import sleep          #import
 import datetime
+import requests, json, time
+
+d_url = "http://bnrtracker.qroo.co.kr/_API/saveData.php"
+i_url = "http://bnrtracker.qroo.co.kr/_API/saveImpactData.php"
 
 temp_sensor = Adafruit_DHT.DHT22
 temp_pin = 4
