@@ -7,7 +7,7 @@ import datetime
 import requests, json, time
 import subprocess
 
-proc = subprocess.Popen("python cargo_impactData.py", stdout = subprocess.PIPE, shell = True)
+proc = subprocess.Popen("sudo python /home/pi/gpstracker/cargo_impactData.py", stdout = subprocess.PIPE, shell = True)
 
 
 d_url = "http://bnrtracker.qroo.co.kr/_API/saveData.php"
