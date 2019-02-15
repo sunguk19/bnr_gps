@@ -9,6 +9,8 @@ import requests, json, time
 d_url = "http://bnrtracker.qroo.co.kr/_API/saveData.php"
 i_url = "http://bnrtracker.qroo.co.kr/_API/saveImpactData.php"
 
+dev_num = "cargo_proto0"
+
 temp_sensor = Adafruit_DHT.DHT22
 temp_pin = 4
 gps_port = '/dev/ttyAMA0'
@@ -52,11 +54,21 @@ gps_ser = serial.Serial(gps_port, baudrate =  9600, timeout = 1)
 print ("serial is connected")
 
 while True :
+
+    params = {}
+    params['device_number'] = dev_num
+
     gps_data = gps_ser.readline()
 #    print gps_data
     if gps_data[0:6] == '$GPGGA' :
         msg = pynmea2.parse(gps_data)
+        params['tra_lat'] = str(msg.lat)
+        params['tra_lon'] = str(msg.lon)
         print("lat : " + msg.lat + "lon = " + msg.lon)
+    else :
+        params['tra_lat'] = "*****"
+        params['tra_lon'] = "*****"
+
     #else :
        # print("gps dectection is fail")
     acc_x = read_raw_data(ACCEL_XOUT_H)
@@ -74,8 +86,19 @@ while True :
     Gy = gyro_y / 131.0
     Gz = gyro_z / 131.0
     
-    s = datetime.datetime.now()
-    print s
+    params['tra_Ax'] = Ax
+    params['tra_Ay'] = Ay
+    params['tra_Az'] = Az
+
+    params['tra_Gx'] = Gx
+    params['tra_Gy'] = Gy
+    params['tra_Gz'] = Gz
+
+    #s = datetime.datetime.now()
+    #print s
+    now = time.localtime()
+    datetime = str(now.tm_year) + "-" + str(now.tm_mon) + "-" + str(now.tm_mday) + "-" + str(now.tm_hour) + "-" + str(now.tm_min) + "-" + str(now.tm_sec)
+    params['tra_datetime'] = datetime
 
     print("Gx = %.2fdeg/s"%Gx + " Gy = %.2fdeg/s"%Gy, "Gz = %.2fdeg/s"%Gz, "Ax = %.2fg"%Ax, "Ay = %.2fg"%Ay, "Az = %.2fg"%Az)
     #print("Gx = %.3fdeg/s"%Gx + " Gy = %.3fdeg/s"%Gy, "Gz = %.3fdeg/s"%Gz, "Ax = %.3fg"%Ax, "Ay = %.3fg"%Ay, "Az = %.3fg"%Az)
@@ -84,7 +107,17 @@ while True :
     humidity, temperature = Adafruit_DHT.read_retry(temp_sensor, temp_pin)
     if humidity is not None and temperature is not None:
         print('Temp = {0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
+        params['tra_temp'] = temperature
+        params['tra_humidity'] = humidity
     else :
         print('fail to get reading temperature sensor value')
+        params['tra_temp'] = "******"
+        params['tra_humidity'] = "******"
     
+    try :
+        res = requests.post(url = d_url, data = params)
+        print(res.json())
+    except :
+        print("fail to post")
+
 
