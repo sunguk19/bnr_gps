@@ -18,7 +18,7 @@ while True :
             params = {}
             params['device_number'] = dev_num
             now = time.localtime()
-            datetime = str(now.tm_year) + "-" + str(now.tm_mon) + "-" + str(now.tm_mday) + "-" + str(now.tm_hour) + "-" + str(now.tm_hour) + "-" + str(now.tm_min) + "-" + str(now.tm_sec)
+            datetime = str(now.tm_year) + "-" + str(now.tm_mon) + "-" + str(now.tm_mday) + "-" + str(now.tm_hour) + "-" + str(now.tm_min) + "-" + str(now.tm_sec)
             params['tra_datetime'] = datetime
             params['tra_impact'] = result
             res = requests.post(url = i_url, data = params)
