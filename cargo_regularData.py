@@ -64,11 +64,29 @@ while True :
 
     gps_data = gps_ser.readline()
 #    print gps_data
+
+   # while gps_data[0:6] != '$GPGGA' :
+    #    gps_data = gps_ser.readline()
+    
+    for i in range (0,7) :
+        gps_data = gps_ser.readline()
+        if gps_data[0:6] == '$GPGGA' :
+            break
+
+
+    
+
     if gps_data[0:6] == '$GPGGA' :
         msg = pynmea2.parse(gps_data)
-        params['tra_lat'] = str(msg.lat)
-        params['tra_lon'] = str(msg.lon)
-        print("lat : " + msg.lat + "lon = " + msg.lon)
+        b = eval(msg.lat) / 100
+        a = str(b).split(".")
+        clat = a[0] + "." + str(eval(a[1]) / 60)
+        z = eval(msg.lon) / 100
+        x = str(z).split(".")
+        clon = x[0] + "." + str(eval(x[1]) / 60)
+        params['tra_lat'] = str(clat)
+        params['tra_lon'] = str(clon)
+        print("lat : " + clat + "             " +  "lon = " + clon)
     else :
         params['tra_lat'] = "*****"
         params['tra_lon'] = "*****"
@@ -97,7 +115,7 @@ while True :
     params['tra_Gx'] = Gx
     params['tra_Gy'] = Gy
     params['tra_Gz'] = Gz
-
+    #params['tra_impact'] = NULL
     #s = datetime.datetime.now()
     #print s
     now = time.localtime()
