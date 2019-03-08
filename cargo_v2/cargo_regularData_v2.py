@@ -7,13 +7,7 @@ import datetime
 import requests, json, time
 import subprocess
 
-proc = subprocess.Popen("sudo python /home/pi/gpstracker/cargo_v2/cargo_impactData_v2.py", stdout = subprocess.PIPE, shell = True)
-
-
-d_url = "http://bnrtracker.qroo.co.kr/_API/saveData.php"
-i_url = "http://bnrtracker.qroo.co.kr/_API/saveImpactData.php"
-
-dev_num = "cargo_proto0"
+#proc = subprocess.Popen("sudo python /home/pi/gpstracker/cargo_v2/cargo_impactData_v2.py", stdout = subprocess.PIPE, shell = True)
 
 temp_sensor = Adafruit_DHT.DHT22
 temp_pin = 4
@@ -59,15 +53,8 @@ print ("serial is connected")
 
 while True :
 
-    params = {}
-    params['device_number'] = dev_num
-
     gps_data = gps_ser.readline()
-#    print gps_data
-
-   # while gps_data[0:6] != '$GPGGA' :
-    #    gps_data = gps_ser.readline()
-    
+    params = {} 
     for i in range (0,7) :
         gps_data = gps_ser.readline()
         if gps_data[0:6] == '$GPGGA' :
@@ -95,13 +82,9 @@ while True :
         if params['tra_lon'] == "0.0" : 
             params['tra_lon'] = "*****"
 
-#        print("lat : " + clat + "             " +  "lon = " + clon)
     else :
         params['tra_lat'] = "*****"
         params['tra_lon'] = "*****"
-
-    #else :
-       # print("gps dectection is fail")
     acc_x = read_raw_data(ACCEL_XOUT_H)
     acc_y = read_raw_data(ACCEL_YOUT_H)
     acc_z = read_raw_data(ACCEL_ZOUT_H)
@@ -124,41 +107,23 @@ while True :
     params['tra_Gx'] = Gx
     params['tra_Gy'] = Gy
     params['tra_Gz'] = Gz
-    #params['tra_impact'] = NULL
-    #s = datetime.datetime.now()
-    #print s
+
     now = time.localtime()
     datetime = str(now.tm_year) + "-" + str(now.tm_mon) + "-" + str(now.tm_mday) + "-" + str(now.tm_hour) + "-" + str(now.tm_min) + "-" + str(now.tm_sec)
     params['tra_datetime'] = datetime
 
- #   print("Gx = %.2fdeg/s"%Gx + " Gy = %.2fdeg/s"%Gy, "Gz = %.2fdeg/s"%Gz, "Ax = %.2fg"%Ax, "Ay = %.2fg"%Ay, "Az = %.2fg"%Az)
-    #print("Gx = %.3fdeg/s"%Gx + " Gy = %.3fdeg/s"%Gy, "Gz = %.3fdeg/s"%Gz, "Ax = %.3fg"%Ax, "Ay = %.3fg"%Ay, "Az = %.3fg"%Az)
-
 
     humidity, temperature = Adafruit_DHT.read_retry(temp_sensor, temp_pin)
     if humidity is not None and temperature is not None:
-  #      print('Temp = {0:0.1f}*C  Humidity={1:0.1f}%'.format(temperature, humidity))
         params['tra_temp'] = temperature
         params['tra_humidity'] = humidity
     else :
-   #     print('fail to get reading temperature sensor value')
         params['tra_temp'] = "******"
         params['tra_humidity'] = "******"
     
-  #  try :
-    dataString = str(dev_num) + " " + str(params['tra_temp']) + " " + str(params['tra_humidity']) + " " + str(params['tra_Gx']) + " " + str(params['tra_Gy']) + " " + str(params['tra_Gz']) + " " + str(params['tra_Ax']) + " " + str(params['tra_Ay']) + " " + str(params['tra_Az']) + " " + str(params['tra_datetime']) + " " + str(params['tra_lat']) + " " + str(params['tra_lon']) + " 0\n"
+    dataString = "BNRtechnology_cargo_tracker_Rdata" + " " + str(params['tra_temp']) + " " + str(params['tra_humidity']) + " " + str(params['tra_Gx']) + " " + str(params['tra_Gy']) + " " + str(params['tra_Gz']) + " " + str(params['tra_Ax']) + " " + str(params['tra_Ay']) + " " + str(params['tra_Az']) + " " + str(params['tra_datetime']) + " " + str(params['tra_lat']) + " " + str(params['tra_lon']) + " 0\n"
 
     print (dataString)
     f = open("./DATA.txt", "a+")
     f.write(dataString)
     f.close()
-
-
-
-
-        #res = requests.post(url = d_url, data = params)
-        #print(res.json())
-    #except :
-     #   print("fail to post")
-
-
