@@ -7,7 +7,7 @@ import datetime
 import requests, json, time
 import subprocess
 
-proc = subprocess.Popen("sudo python /home/pi/gpstracker/cargo_v2/cargo_impactData.py", stdout = subprocess.PIPE, shell = True)
+proc = subprocess.Popen("sudo python /home/pi/gpstracker/cargo_impactData_v2.py", stdout = subprocess.PIPE, shell = True)
 
 
 d_url = "http://bnrtracker.qroo.co.kr/_API/saveData.php"
@@ -149,7 +149,7 @@ while True :
     dataString = str(dev_num) + " " + str(params['tra_temp']) + " " + str(params['tra_humidity']) + " " + str(params['tra_Gx']) + " " + str(params['tra_Gy']) + " " + str(params['tra_Gz']) + " " + str(params['tra_Ax']) + " " + str(params['tra_Ay']) + " " + str(params['tra_Az']) + " " + str(params['tra_datetime']) + " " + str(params['tra_lat']) + " " + str(params['tra_lon']) + " 0\n"
 
     print (dataString)
-    f = open("./DATA.txt", "a+")
+    f = open("/home/pi/gpstracker/DATA.txt", "a+")
     f.write(dataString)
     f.close()
 

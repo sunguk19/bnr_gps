@@ -26,7 +26,7 @@ while True :
             dataString = dataString + str(dev_num)
             dataString = dataString + " * * * * * * * * "
             dataString = dataString + str(params['tra_datetime']) + " * * " + str(result) + "\n"
-            f = open("./DATA.txt", 'a+')
+            f = open("/home/pi/gpstracker/DATA.txt", 'a+')
             f.write(dataString)
             f.close()
             #res = requests.post(url = i_url, data = params)
