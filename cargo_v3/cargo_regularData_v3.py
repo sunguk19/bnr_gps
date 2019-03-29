@@ -112,18 +112,17 @@ while True :
     Gy = gyro_y / 131.0
     Gz = gyro_z / 131.0
     
-    params['tra_Ax'] = Ax
-    params['tra_Ay'] = Ay
-    params['tra_Az'] = Az
+    params['tra_Ax'] = round(Ax, 3)
+    params['tra_Ay'] = round(Ay, 3)
+    params['tra_Az'] = round(Az, 3)
 
-    params['tra_Gx'] = Gx
-    params['tra_Gy'] = Gy
-    params['tra_Gz'] = Gz
+    params['tra_Gx'] = round(Gx, 3)
+    params['tra_Gy'] = round(Gy, 3)
+    params['tra_Gz'] = round(Gz, 3)
 
     now = time.localtime()
     datetime = str(now.tm_year) + "-" + str(now.tm_mon) + "-" + str(now.tm_mday) + "-" + str(now.tm_hour) + "-" + str(now.tm_min) + "-" + str(now.tm_sec)
     params['tra_datetime'] = datetime
-
     
     humidity, temperature = Adafruit_DHT.read_retry(temp_sensor, temp_pin)
     if humidity is not None and temperature is not None:
@@ -132,13 +131,14 @@ while True :
     else :
         params['tra_temp'] = "******"
         params['tra_humidity'] = "******"
-    """
+    """ 
     params['tra_temp'] = "******"
-    params['tra_humidity'] = "******"
-    """
+    params['tra_humidity'] = "******" 
+    """    
     dataString = str(params['de_number']) + " " + str(params['tra_temp']) + " " + str(params['tra_humidity']) + " " + str(params['tra_Gx']) + " " + str(params['tra_Gy']) + " " + str(params['tra_Gz']) + " " + str(params['tra_Ax']) + " " + str(params['tra_Ay']) + " " + str(params['tra_Az']) + " " + str(params['tra_datetime']) + " " + str(params['tra_lat']) + " " + str(params['tra_lon']) + " 0\n"
 
     print (dataString)
+ 
     f = open(rdata_path, "a+")
     f.write(dataString)
     f.close()
@@ -167,4 +167,3 @@ while True :
     f = open(rdata_path, "w")
     f.writelines(l)
     f.close()
-
