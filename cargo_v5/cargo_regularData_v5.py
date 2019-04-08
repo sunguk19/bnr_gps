@@ -8,10 +8,10 @@ import requests, json, time
 import subprocess
 import serial
 
-proc = subprocess.Popen("sudo python /home/pi/gpstracker/cargo_v4/cargo_impactData_v4.py", stdout = subprocess.PIPE, shell = True)
+proc = subprocess.Popen("sudo python /home/pi/gpstracker/cargo_v5/cargo_impactData_v5.py", stdout = subprocess.PIPE, shell = True)
 
 de_number = "cargo_proto0"
-log_files_path = "/home/pi/gpstracker/cargo_v4/log_files/"
+log_files_path = "/home/pi/gpstracker/cargo_v5/log_files/"
 
 
 temp_sensor = Adafruit_DHT.DHT22
@@ -137,11 +137,9 @@ while True :
     dataString = str(params['de_number']) + " " + str(params['tra_temp']) + " " + str(params['tra_humidity']) + " " + str(params['tra_Gx']) + " " + str(params['tra_Gy']) + " " + str(params['tra_Gz']) + " " + str(params['tra_Ax']) + " " + str(params['tra_Ay']) + " " + str(params['tra_Az']) + " " + str(params['tra_datetime']) + " " + str(params['tra_lat']) + " " + str(params['tra_lon']) + " 0\n"
 
     print (dataString)
-    data_buffer.append(dataString)
-    if len(data_buffer) > 30 :
-        f = open(log_files_path + datetime + "r" + ".txt", "a+")
-        for i in range (0, len(data_buffer)) :
-            f.write(data_buffer[i])
-        f.close()
+    data_buffer.append(params)
+    if len(data_buffer) > 60 :
+        with open(log_files_path + datetime + "r.json", 'a') as make_file:
+            json.dump(data_buffer,make_file,  ensure_ascii = False, indent = "\t")
         data_buffer=[]
 

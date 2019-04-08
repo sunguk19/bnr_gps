@@ -7,7 +7,7 @@ GPIO.setup(dataPin, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 time.sleep(1)
 
 de_number = "cargo_proto0"
-log_files_path = "/home/pi/gpstracker/cargo_v4/logfiles/"
+log_files_path = "/home/pi/gpstracker/cargo_v4/log_files/"
 
 
 while True :
@@ -25,6 +25,7 @@ while True :
         f = open(log_files_path + datetime + "i" + ".txt", "a+")
         f.write(dataString)
         f.close()
+        time.sleep(0.5)
 
 
 
