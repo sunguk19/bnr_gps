@@ -139,7 +139,7 @@ while True :
 
     print (dataString)
     data_buffer.append(params)
-    if len(data_buffer) > 3 :
+    if len(data_buffer) > 60 :
         with open(log_files_path + datetime + "r.json", 'a') as make_file:
             json.dump(data_buffer,make_file,  ensure_ascii = False, indent = "\t")
         data_buffer=[]
