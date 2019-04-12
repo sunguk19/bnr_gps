@@ -8,11 +8,11 @@ import requests, json, time
 import subprocess
 import serial
 
-proc = subprocess.Popen("sudo python /home/pi/gpstracker/cargo_v5/cargo_impactData_v5.py", stdout = subprocess.PIPE, shell = True)
-proc1= subprocess.Popen("sudo python /home/pi/gpstracker/cargo_v5/cargo_post_v5.py", stdout = subprocess.PIPE, shell = True)
+proc = subprocess.Popen("sudo python3 /home/pi/bnr_gps/cargo_v5/cargo_impactData_v5.py", stdout = subprocess.PIPE, shell = True)
+proc1= subprocess.Popen("sudo python /home/pi/bnr_gps/cargo_v5/cargo_post_v5.py", stdout = subprocess.PIPE, shell = True)
 
 de_number = "cargo_proto0"
-log_files_path = "/home/pi/gpstracker/cargo_v5/log_files/"
+log_files_path = "/home/pi/bnr_gps/cargo_v5/log_files/"
 
 
 temp_sensor = Adafruit_DHT.DHT22
@@ -139,7 +139,7 @@ while True :
 
     print (dataString)
     data_buffer.append(params)
-    if len(data_buffer) > 3 :
+    if len(data_buffer) > 180 :
         with open(log_files_path + datetime + "r.json", 'a') as make_file:
             json.dump(data_buffer,make_file,  ensure_ascii = False, indent = "\t")
         data_buffer=[]

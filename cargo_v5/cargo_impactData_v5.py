@@ -7,7 +7,7 @@ GPIO.setup(dataPin, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 time.sleep(1)
 
 de_number = "cargo_proto0"
-log_files_path = "/home/pi/gpstracker/cargo_v5/log_files/"
+log_files_path = "/home/pi/bnr_gps/cargo_v5/log_files/"
 
 data_buffer=[]
 
@@ -26,10 +26,7 @@ while True :
         dataString = dataString + str(datetime) + " * * " + str(result) + "\n"
         print (dataString)
         data_buffer.append(params)
-        with open(log_files_path + datetime + "i.json", "a+") as make_file:
-            json.dump(params, make_file, ensure_ascii = False, indent = '\t')
-        time.sleep(0.5)
-
-
-
-
+        with open(log_files_path + datetime + "i.json", "a") as make_file:
+            json.dump(data_buffer, make_file, ensure_ascii = False, indent = '\t')
+        databuffer=[]
+        time.sleep(1)
