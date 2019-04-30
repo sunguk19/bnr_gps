@@ -54,7 +54,7 @@ Device_Address = 0x68
 MPU_Init()
 print ("start gyro")
 
-gps_ser = serial.Serial(gps_port, baudrate =  9600, timeout = 1)
+gps_ser = serial.Serial(gps_port, baudrate =  9600, timeout = 2)
 print ("GPS serial is connected")
 data_buffer=[]
 
@@ -139,7 +139,8 @@ while True :
 
     print (dataString)
     data_buffer.append(params)
-    if len(data_buffer) > 180 :
+    time.sleep(1)
+    if len(data_buffer) > 5 :
         with open(log_files_path + datetime + "r.json", 'a') as make_file:
             json.dump(data_buffer,make_file,  ensure_ascii = False, indent = "\t")
         data_buffer=[]

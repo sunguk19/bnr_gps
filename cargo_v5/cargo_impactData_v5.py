@@ -29,4 +29,4 @@ while True :
         with open(log_files_path + datetime + "i.json", "a") as make_file:
             json.dump(data_buffer, make_file, ensure_ascii = False, indent = '\t')
         databuffer=[]
-        time.sleep(1)
+        time.sleep(3)
