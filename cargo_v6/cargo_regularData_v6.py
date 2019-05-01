@@ -8,8 +8,8 @@ import requests, json, time
 import subprocess
 import serial
 
-#proc = subprocess.Popen("sudo python3 /home/pi/bnr_gps/cargo_v6/cargo_impactData_v6.py", stdout = subprocess.PIPE, shell = True)
-#proc1= subprocess.Popen("sudo python /home/pi/bnr_gps/cargo_v6/cargo_post_v6.py", stdout = subprocess.PIPE, shell = True)
+proc = subprocess.Popen("sudo python3 /home/pi/bnr_gps/cargo_v6/cargo_impactData_v6.py", stdout = subprocess.PIPE, shell = True)
+proc1= subprocess.Popen("sudo python /home/pi/bnr_gps/cargo_v6/cargo_post_v6.py", stdout = subprocess.PIPE, shell = True)
 
 de_number = "cargo_proto0"
 log_files_path = "/home/pi/bnr_gps/cargo_v6/log_files/"
@@ -39,17 +39,16 @@ while True :
     try : 
         if gps_data[0:6] == b'$GNGGA' :
             msg = pynmea2.parse(gps_data.decode("utf-8","ignore"))
-            print (msg.lat)
             if msg.lat == "" :
                 msg.lat = "0.0"
             b = eval(msg.lat) / 100
             a = str(b).split(".")
-            clat = a[0] + "." + str(eval(a[1]) / 60)
+            clat = a[0] + "." + str(int(eval(a[1]) / 60))
             if msg.lon == "" :
                 msg.lon = "0.0"
             z = eval(msg.lon) / 100
             x = str(z).split(".")
-            clon = x[0] + "." + str(eval(x[1]) / 60)
+            clon = x[0] + "." + str(int(eval(x[1]) / 60))
             params['tra_lat'] = str(clat)
             params['tra_lon'] = str(clon)
             if params['tra_lat'] == "0.0" : 
