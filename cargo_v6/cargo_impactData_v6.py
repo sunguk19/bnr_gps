@@ -7,7 +7,7 @@ GPIO.setup(dataPin, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 time.sleep(1)
 
 de_number = "cargo_proto0"
-log_files_path = "/home/pi/bnr_gps/cargo_v5/log_files/"
+log_files_path = "/home/pi/bnr_gps/cargo_v6/log_files/"
 
 data_buffer=[]
 
