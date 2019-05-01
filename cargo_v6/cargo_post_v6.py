@@ -5,7 +5,7 @@ d_url = "http://bnrtracker.dreammug.com/_API/saveDataFromJson.php"
 log_data_path = "/home/pi/bnr_gps/cargo_v6/log_files/"
 dir_path = "/home/pi/bnr_gps/cargo_v6/"
 
-proc = subprocess.Popen(dir_path + "ser.py", stdout = subprocess.PIPE, shell = True)
+proc = subprocess.Popen("sudo python " + dir_path + "ser.py", stdout = subprocess.PIPE, shell = True)
 
 while 1:
     try : 
@@ -22,10 +22,10 @@ while 1:
                 res = requests.post(url = d_url, files = files)
                 print log_data_path + str(file_list[i]) 
                 if res.json()["status_code"] == "0" :
-                    os.remove(log_data_path + str(file_list[i]))
+                    os.remove("sudo python " + log_data_path + str(file_list[i]))
                     print "del"
                 else :
-                    proc = subprocess.Popen(dir_path + "ser.py", stdout = subprocess.PIPE, shell = True)
+                    proc = subprocess.Popen("sudo python " + dir_path + "ser.py", stdout = subprocess.PIPE, shell = True)
         else :
             print "no file"
             time.sleep(1)

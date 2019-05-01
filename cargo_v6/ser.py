@@ -1,5 +1,6 @@
-import serial, time
-ser = serial.Serial("/dev/ttyACM0", 9600,timeout = 10)
+import serial
+import time
+ser = serial.Serial("/dev/ttyACM0", 9600,timeout = 15)
 #time.sleep(1)
 ser.write("at+kusbcomp?\r\n")
 print ser.readline()
