@@ -28,17 +28,18 @@ while True :
 
     params = {} 
     params['de_number'] = str(de_number)
-    for i in range (0,10) :
+    for i in range (0,20) :
         gps_data = gps_ser.readline()
-        if gps_data[0:6] == '$GPGGA' :
-            print gps_data
+        if gps_data[0:6] == b'$GNGGA' :
+            print ("find GNGGA")
             break
 
 
     
     try : 
-        if gps_data[0:6] == '$GPGGA' :
-            msg = pynmea2.parse(gps_data)
+        if gps_data[0:6] == b'$GNGGA' :
+            msg = pynmea2.parse(gps_data.decode("utf-8","ignore"))
+            print (msg.lat)
             if msg.lat == "" :
                 msg.lat = "0.0"
             b = eval(msg.lat) / 100
@@ -57,10 +58,10 @@ while True :
                 params['tra_lon'] = "*****"
 
         else :
+            print ("else")
             params['tra_lat'] = "*****"
             params['tra_lon'] = "*****"
     except : 
-        print "fail to detec GPS"
         params['tra_lat'] = "*****"
         params['tra_lon'] = "*****"
     
