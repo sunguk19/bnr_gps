@@ -32,3 +32,4 @@ while 1:
     except :
         print "error"
         proc = subprocess.Popen("sudo python " + dir_path + "ser.py", stdout = subprocess.PIPE, shell = True)
+        time.sleep(1)
