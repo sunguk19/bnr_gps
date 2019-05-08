@@ -88,9 +88,9 @@ while True :
 
     print (dataString)
     data_buffer.append(params)
-    time.sleep(1)
-    if len(data_buffer) > 5 :
-        with open(log_files_path + datetime + "r.json", 'a') as make_file:
+    if len(data_buffer) > 10 :
+        with open(log_files_path + datetime + "r.json", 'w') as make_file:
             json.dump(data_buffer,make_file,  ensure_ascii = False, indent = "\t")
         data_buffer=[]
+    time.sleep(1)
 

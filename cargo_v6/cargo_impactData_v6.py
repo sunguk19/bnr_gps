@@ -26,7 +26,8 @@ while True :
         dataString = dataString + str(datetime) + " * * " + str(result) + "\n"
         print (dataString)
         data_buffer.append(params)
-        with open(log_files_path + datetime + "i.json", "a") as make_file:
-            json.dump(data_buffer, make_file, ensure_ascii = False, indent = '\t')
+        with open(log_files_path + datetime + "i.json", "w") as make_file:
+            #json.dump(data_buffer, make_file, ensure_ascii = False, indent = '\t')
+            json.dump(params, make_file, ensure_ascii = False, indent = '\t')
         data_buffer=[]
         time.sleep(3)
