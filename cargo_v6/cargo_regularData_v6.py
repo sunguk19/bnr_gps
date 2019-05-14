@@ -30,8 +30,8 @@ while True :
     params['de_number'] = str(de_number)
     for i in range (0,20) :
         gps_data = gps_ser.readline()
-        if gps_data[0:6] == b'$GNGGA' :
-            print ("find GNGGA")
+        if gps_data[0:6] == b'$GNGGA' or gps_data[0:6] == b'$GPGGA' :
+            print ("find G*GGA")
             break
 
 
