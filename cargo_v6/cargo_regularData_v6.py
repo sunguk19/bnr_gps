@@ -37,7 +37,7 @@ while True :
 
     
     try : 
-        if gps_data[0:6] == b'$GNGGA' :
+        if gps_data[0:6] == b'$GNGGA' or gps_data[0:6] == b'$GPGGA' :
             msg = pynmea2.parse(gps_data.decode("utf-8","ignore"))
             if msg.lat == "" :
                 msg.lat = "0.0"
